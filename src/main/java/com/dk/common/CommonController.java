@@ -30,30 +30,30 @@ public class CommonController {
     @PostMapping("/image/upload")
     public DataResult upload(@RequestParam MultipartFile file) throws Exception {
         if(file.isEmpty()) {
-            throw new MyServiceException("请选择要上传的文件");
+            throw new MyServiceException("Please select the file to upload");
         }
         File destFile = new File(folder);
         if (!destFile.exists()) {
             destFile = new File("");
         }
-        //拼接子路径
+        // concatenate sub-path
         SimpleDateFormat sf_ = new SimpleDateFormat("yyyyMMdd");
         String times = sf_.format(new Date());
         File upload = new File(destFile.getAbsolutePath(), times);
-        //若目标文件夹不存在，则创建
+        // if the target folder does not exist, then create it
         if (!upload.exists()) {
             upload.mkdirs();
         }
-        //根据file大小，准备一个字节数组
+        // Prepare a byte array based on file size
         byte[] bytes = file.getBytes();
-        //拼接上传路径
-        //通过项目路径，拼接上传路径
+        // concatenate upload path
+        // Through the project path, concatenate the upload path
         String fileName = file.getOriginalFilename();
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");
         fileName = fileName.substring(fileName.lastIndexOf(".")).toLowerCase();
         fileName = uuid+fileName;
         Path path = Paths.get(upload.getAbsolutePath() + "/" + fileName);
-        //** 开始将源文件写入目标地址
+        //** Start writing the source file to the target address
         Files.write(path, bytes);
         String folder1 = upload.getAbsolutePath() + "/" + fileName;
         folder1 = folder1.substring(folder.length(),folder1.length());

@@ -66,11 +66,11 @@ public class ConfigChannelController {
         JSONObject o = new JSONObject();
         String channelCode = request.getParameter("channelCode");
         if (StringUtils.isEmpty(channelCode)){
-            throw new MyServiceException("服务器异常，请稍后重试！");
+            throw new MyServiceException("Server exception, please try again later!");
         }
         ConfigChannel channel = channelService.findById(channelCode);
         if (null == channel || channel.getDeleted() ==1){
-            throw new MyServiceException("通道已关闭，请与管理员联系！");
+            throw new MyServiceException("The channel is closed, please contact the administrator!");
         }
         ConfigSpread spread = spreadMapper.selectByPrimaryKey("1");
         if (null!=spread && spread.getStatus() == 0 && !StringUtils.isEmpty(spread.getAreas())){

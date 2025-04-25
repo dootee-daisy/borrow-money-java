@@ -29,7 +29,7 @@ public class AuthorityHelper {
         object.put("token",token);
         redisService.addDefaultAgeValue(RedisKeyPrefix.GLOBAL_LOGIN_TOKEN+token,object);
         Cookie cookie = new Cookie("token", token);
-        //12小时
+        // 12 hours
         cookie.setMaxAge(MAX_AGE);
         cookie.setPath("/");
         response.addCookie(cookie);

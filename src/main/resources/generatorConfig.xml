@@ -1,55 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE generatorConfiguration
-        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
-        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
-    <classPathEntry location="C:\Java\apache-maven-3.6.3\repository\mysql\mysql-connector-java\8.0.20\mysql-connector-java-8.0.20.jar"/>
+    <classPathEntry location="C:\Java\apache-maven-3.6.3
+epository\mysql\mysql-connector-java\8.0.20\mysql-connector-java-8.0.20.jar"/>
     <context id="testTables" targetRuntime="MyBatis3" >
         <commentGenerator>
-            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+            <!-- Whether to remove automatically generated comments true: yes : false: no -->
             <property name="suppressAllComments" value="true" />
         </commentGenerator>
         <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver"
-                        connectionURL="jdbc:mysql://192.168.0.100:3306/dk"
-                        userId="root"
-                        password="root">
+          connectionURL="jdbc:mysql://192.168.0.100:3306/dk"
+          userId="root"
+          password="root">
         </jdbcConnection>
-        <!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer，为 true时把JDBC DECIMAL 和
-            NUMERIC 类型解析为java.math.BigDecimal -->
+        <!-- Default false, parse JDBC DECIMAL and NUMERIC types as Integer, when true parse JDBC DECIMAL and NUMERIC types as java.math.BigDecimal -->
         <javaTypeResolver>
             <property name="forceBigDecimals" value="false" />
         </javaTypeResolver>
-        <!-- targetProject:生成PO类的位置 -->
+        <!-- targetProject: Location for generating PO classes -->
         <javaModelGenerator targetPackage="com.dk.modules.config.po"
-                            targetProject="src\main\java">
-            <!-- enableSubPackages:是否让schema作为包的后缀 -->
+          targetProject="src\main\java">
+            <!-- enableSubPackages: Whether to use schema as package suffix -->
             <property name="enableSubPackages" value="false" />
-            <!-- 从数据库返回的值被清理前后的空格 -->
+            <!-- Trim leading and trailing spaces from values returned from the database -->
             <property name="trimStrings" value="true" />
         </javaModelGenerator>
-        <!-- targetProject:mapper映射文件生成的位置 -->
+        <!-- targetProject: Location for generating mapper mapping files -->
         <sqlMapGenerator targetPackage="com.dk.modules.config.mapper"
-                         targetProject="src\main\resources">
-            <!-- enableSubPackages:是否让schema作为包的后缀 -->
+          targetProject="src\main
+esources">
+            <!-- enableSubPackages: Whether to use schema as package suffix -->
             <property name="enableSubPackages" value="false" />
         </sqlMapGenerator>
-        <!-- targetPackage：mapper接口生成的位置 -->
+        <!-- targetPackage: Location for generating mapper interface -->
         <javaClientGenerator type="XMLMAPPER"
-                             targetPackage="com.dk.modules.config.mapper"
-                             targetProject="src\main\java">
-            <!-- enableSubPackages:是否让schema作为包的后缀 -->
+          targetPackage="com.dk.modules.config.mapper"
+          targetProject="src\main\java">
+            <!-- enableSubPackages: Whether to use schema as package suffix -->
             <property name="enableSubPackages" value="false" />
         </javaClientGenerator>
-        <!-- 指定数据库表 配置表信息 -->
+        <!-- Specify database table Configuration table information -->
 
         <table tableName="CONFIG_SPREAD"
-               domainObjectName="ConfigSpread"
-               enableCountByExample="false"
-               enableDeleteByExample="false"
-               enableSelectByExample="false"
-               selectByExampleQueryId="false"
-               enableUpdateByExample="false">
+          domainObjectName="ConfigSpread"
+          enableCountByExample="false"
+          enableDeleteByExample="false"
+          enableSelectByExample="false"
+          selectByExampleQueryId="false"
+          enableUpdateByExample="false">
         </table>
     </context>
 </generatorConfiguration>

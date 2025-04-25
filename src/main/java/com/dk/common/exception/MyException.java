@@ -3,7 +3,7 @@ package com.dk.common.exception;
 public class MyException extends Exception {
 
     public static final int UNKNOWN_ERROR_CODE = 8000;
-    public static final String UNKNOWN_ERROR_MSG = "系统异常,请稍后重试";
+    public static final String UNKNOWN_ERROR_MSG = "System exception, please try again later";
 
     private int code = 200;
     private String msg;

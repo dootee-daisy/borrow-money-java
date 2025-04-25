@@ -22,7 +22,7 @@ public class AuthorityInterceptor implements HandlerInterceptor {
         if (!verified){
             Result result = new Result();
             result.setCode(HttpStatus.UNAUTHORIZED.value());
-            result.setMsg("请先登录");
+            result.setMsg("Please log in first");
             response.setHeader("Content-type","application/json;charset=UTF-8");
             response.setStatus(HttpStatus.OK.value());
             response.setCharacterEncoding("utf-8");
