@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dk.modules.user.mapper.AdminUserMapper">
+  <resultMap id="BaseResultMap" type="com.dk.modules.user.po.AdminUser">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="ACCOUNT" jdbcType="VARCHAR" property="account" />
+    <result column="PASSWORD" jdbcType="VARCHAR" property="password" />
+    <result column="IDENTITY_NAME" jdbcType="VARCHAR" property="identityName" />
+    <result column="LAST_LOGIN_TIME" jdbcType="TIMESTAMP" property="lastLoginTime" />
+    <result column="STATUS" jdbcType="VARCHAR" property="status" />
+    <result column="TYPE" jdbcType="INTEGER" property="type"></result>
+    <result column="DELETED" jdbcType="INTEGER" property="deleted"></result>
+    <result column="NAME" jdbcType="VARCHAR" property="name"></result>
+    <result column="PHONE" jdbcType="VARCHAR" property="phone"></result>
+    <result column="LAST_LOGIN_IP" jdbcType="VARCHAR" property="lastLoginIp"></result>
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, ACCOUNT, PASSWORD, IDENTITY_NAME, LAST_LOGIN_TIME, STATUS, TYPE,DELETED,NAME,PHONE,LAST_LOGIN_IP
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from ADMIN_USER
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByAccountAndPwd" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ADMIN_USER
+    where ACCOUNT = #{account} and PASSWORD = #{password}
+  </select>
+  <select id="selectConfigAdminAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from ADMIN_USER
+    <where>
+      DELETED = 0
+      <if test="phone!=null and phone != ''">
+        AND PHONE like CONCAT('%',#{phone},'%')
+      </if>
+    </where>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ADMIN_USER
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.dk.modules.user.po.AdminUser">
+    insert into ADMIN_USER (ID, ACCOUNT, PASSWORD,
+      IDENTITY_NAME, LAST_LOGIN_TIME, STATUS,TYPE,DELETED,NAME,PHONE,LAST_LOGIN_IP)
+    values (#{id,jdbcType=VARCHAR}, #{account,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+      #{identityName,jdbcType=VARCHAR}, #{lastLoginTime,jdbcType=TIMESTAMP}, #{status,jdbcType=VARCHAR},
+      #{TYPE,jdbcType=INTEGER},#{DELETEDjdbcType=INTEGER},#{NAMEjdbcType=VARCHAR},#{PHONEjdbcType=VARCHAR}
+      ,#{LAST_LOGIN_IPjdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dk.modules.user.po.AdminUser">
+    insert into ADMIN_USER
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="account != null">
+        ACCOUNT,
+      </if>
+      <if test="password != null">
+        PASSWORD,
+      </if>
+      <if test="identityName != null">
+        IDENTITY_NAME,
+      </if>
+      <if test="lastLoginTime != null">
+        LAST_LOGIN_TIME,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="type != null">
+        TYPE,
+      </if>
+      <if test="deleted != null">
+        DELETED,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="phone != null">
+        PHONE,
+      </if>
+      <if test="lastLoginIp != null">
+        LAST_LOGIN_IP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="account != null">
+        #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="identityName != null">
+        #{identityName,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLoginTime != null">
+        #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="name!=null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone!=null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLoginIp!=null">
+        #{lastLoginIp,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dk.modules.user.po.AdminUser">
+    update ADMIN_USER
+    <set>
+      <if test="account != null">
+        ACCOUNT = #{account,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        PASSWORD = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="identityName != null">
+        IDENTITY_NAME = #{identityName,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLoginTime != null">
+        LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="type != null">
+        TYPE = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="deleted!=null">
+        DELETED=#{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="name!=null">
+        NAME=#{name,jdbcType=VARCHAR},
+      </if>
+      <if test="phone!=null">
+        PHONE=#{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLoginIp!=null">
+        LASTLOGINIP=#{lastLoginIp,jdbcType=VARCHAR}
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dk.modules.user.po.AdminUser">
+    update ADMIN_USER
+    set ACCOUNT = #{account,jdbcType=VARCHAR},
+      PASSWORD = #{password,jdbcType=VARCHAR},
+      IDENTITY_NAME = #{identityName,jdbcType=VARCHAR},
+      LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=DATE},
+      STATUS = #{status,jdbcType=VARCHAR},
+      TYPE = #{type,jdbcType=INTEGER},
+      DELETED=#{deleted,jdbcType=INTEGER},
+      NAME=#{name,jdbcType=VARCHAR},
+      PHONE=#{phone,jdbcType=VARCHAR},
+      LASTLOGINIP=#{lastLoginIp,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dk.modules.order.mapper.OrderContractMapper">
+  <resultMap id="BaseResultMap" type="com.dk.modules.order.po.OrderContract">
+    <id column="ORDER_ID" jdbcType="VARCHAR" property="orderId" />
+    <result column="STATUS" jdbcType="INTEGER" property="status" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.dk.modules.order.po.OrderContractWithBLOBs">
+    <result column="AGREEMENT" jdbcType="LONGVARCHAR" property="agreement" />
+    <result column="SIGN" jdbcType="LONGVARCHAR" property="sign" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ORDER_ID, STATUS
+  </sql>
+  <sql id="Blob_Column_List">
+    AGREEMENT, SIGN
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from ORDER_CONTRACT
+    where ORDER_ID = #{orderId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAgreementByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    AGREEMENT
+    from ORDER_CONTRACT
+    where ORDER_ID = #{orderId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ORDER_CONTRACT
+    where ORDER_ID = #{orderId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.dk.modules.order.po.OrderContractWithBLOBs">
+    insert into ORDER_CONTRACT (ORDER_ID, STATUS, AGREEMENT, 
+      SIGN)
+    values (#{orderId,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{agreement,jdbcType=LONGVARCHAR}, 
+      #{sign,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dk.modules.order.po.OrderContractWithBLOBs">
+    insert into ORDER_CONTRACT
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        ORDER_ID,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="agreement != null">
+        AGREEMENT,
+      </if>
+      <if test="sign != null">
+        SIGN,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="agreement != null">
+        #{agreement,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="sign != null">
+        #{sign,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dk.modules.order.po.OrderContractWithBLOBs">
+    update ORDER_CONTRACT
+    <set>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="agreement != null">
+        AGREEMENT = #{agreement,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="sign != null">
+        SIGN = #{sign,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ORDER_ID = #{orderId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.dk.modules.order.po.OrderContractWithBLOBs">
+    update ORDER_CONTRACT
+    set STATUS = #{status,jdbcType=INTEGER},
+      AGREEMENT = #{agreement,jdbcType=LONGVARCHAR},
+      SIGN = #{sign,jdbcType=LONGVARCHAR}
+    where ORDER_ID = #{orderId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dk.modules.order.po.OrderContract">
+    update ORDER_CONTRACT
+    set STATUS = #{status,jdbcType=INTEGER}
+    where ORDER_ID = #{orderId,jdbcType=VARCHAR}
+  </update>
+</mapper>

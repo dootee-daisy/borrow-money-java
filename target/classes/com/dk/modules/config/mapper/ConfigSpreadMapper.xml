@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dk.modules.config.mapper.ConfigSpreadMapper">
+  <resultMap id="BaseResultMap" type="com.dk.modules.config.po.ConfigSpread">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="AREAS" jdbcType="VARCHAR" property="areas" />
+    <result column="STATUS" jdbcType="INTEGER" property="status" />
+    <result column="START_TIME" jdbcType="TIMESTAMP" property="startTime" />
+    <result column="END_TIME" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="INSIDE_PATH" jdbcType="VARCHAR" property="insidePath" />
+    <result column="OUTSIDE_PATH" jdbcType="VARCHAR" property="outsidePath" />
+    <result column="IOS_PATH" jdbcType="VARCHAR" property="iosPath" />
+    <result column="ANDROID_PATH" jdbcType="VARCHAR" property="androidPath" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, AREAS, STATUS, START_TIME, END_TIME, INSIDE_PATH, OUTSIDE_PATH, IOS_PATH, ANDROID_PATH
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from CONFIG_SPREAD
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from CONFIG_SPREAD
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.dk.modules.config.po.ConfigSpread">
+    insert into CONFIG_SPREAD (ID, AREAS, STATUS, 
+      START_TIME, END_TIME, INSIDE_PATH, 
+      OUTSIDE_PATH, IOS_PATH, ANDROID_PATH
+      )
+    values (#{id,jdbcType=VARCHAR}, #{areas,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, 
+      #{startTime,jdbcType=TIMESTAMP}, #{endTime,jdbcType=TIMESTAMP}, #{insidePath,jdbcType=VARCHAR}, 
+      #{outsidePath,jdbcType=VARCHAR}, #{iosPath,jdbcType=VARCHAR}, #{androidPath,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.dk.modules.config.po.ConfigSpread">
+    insert into CONFIG_SPREAD
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="areas != null">
+        AREAS,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="startTime != null">
+        START_TIME,
+      </if>
+      <if test="endTime != null">
+        END_TIME,
+      </if>
+      <if test="insidePath != null">
+        INSIDE_PATH,
+      </if>
+      <if test="outsidePath != null">
+        OUTSIDE_PATH,
+      </if>
+      <if test="iosPath != null">
+        IOS_PATH,
+      </if>
+      <if test="androidPath != null">
+        ANDROID_PATH,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="areas != null">
+        #{areas,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null">
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="insidePath != null">
+        #{insidePath,jdbcType=VARCHAR},
+      </if>
+      <if test="outsidePath != null">
+        #{outsidePath,jdbcType=VARCHAR},
+      </if>
+      <if test="iosPath != null">
+        #{iosPath,jdbcType=VARCHAR},
+      </if>
+      <if test="androidPath != null">
+        #{androidPath,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dk.modules.config.po.ConfigSpread">
+    update CONFIG_SPREAD
+    <set>
+      <if test="areas != null">
+        AREAS = #{areas,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="startTime != null">
+        START_TIME = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endTime != null">
+        END_TIME = #{endTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="insidePath != null">
+        INSIDE_PATH = #{insidePath,jdbcType=VARCHAR},
+      </if>
+      <if test="outsidePath != null">
+        OUTSIDE_PATH = #{outsidePath,jdbcType=VARCHAR},
+      </if>
+      <if test="iosPath != null">
+        IOS_PATH = #{iosPath,jdbcType=VARCHAR},
+      </if>
+      <if test="androidPath != null">
+        ANDROID_PATH = #{androidPath,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dk.modules.config.po.ConfigSpread">
+    update CONFIG_SPREAD
+    set AREAS = #{areas,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=INTEGER},
+      START_TIME = #{startTime,jdbcType=TIMESTAMP},
+      END_TIME = #{endTime,jdbcType=TIMESTAMP},
+      INSIDE_PATH = #{insidePath,jdbcType=VARCHAR},
+      OUTSIDE_PATH = #{outsidePath,jdbcType=VARCHAR},
+      IOS_PATH = #{iosPath,jdbcType=VARCHAR},
+      ANDROID_PATH = #{androidPath,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+</mapper>

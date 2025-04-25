@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dk.modules.config.mapper.ConfigAboutMapper">
+  <resultMap id="BaseResultMap" type="com.dk.modules.config.po.ConfigAbout">
+    <id column="ABOUT_ID" jdbcType="VARCHAR" property="aboutId" />
+    <result column="ABOUT_TYPE" jdbcType="INTEGER" property="aboutType" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.dk.modules.config.po.ConfigAbout">
+    <result column="ABOUT_CONTENT" jdbcType="LONGVARCHAR" property="aboutContent" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ABOUT_ID,
+    ABOUT_TYPE
+  </sql>
+  <sql id="Blob_Column_List">
+    ABOUT_CONTENT
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from CONFIG_ABOUT
+    where ABOUT_ID = #{aboutId,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByType" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from CONFIG_ABOUT
+    where ABOUT_TYPE = #{selectByType}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from CONFIG_ABOUT
+    where ABOUT_ID = #{aboutId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.dk.modules.config.po.ConfigAbout">
+    insert into CONFIG_ABOUT (ABOUT_ID, ABOUT_TYPE,ABOUT_CONTENT)
+    values (#{aboutId,jdbcType=VARCHAR},#{aboutType,jdbcType=INTEGER}, #{aboutContent,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dk.modules.config.po.ConfigAbout">
+    insert into CONFIG_ABOUT
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="aboutId != null">
+        ABOUT_ID,
+      </if>
+      <if test="aboutType != null">
+        ABOUT_TYPE,
+      </if>
+      <if test="aboutContent != null">
+        ABOUT_CONTENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="aboutId != null">
+        #{aboutId,jdbcType=VARCHAR},
+      </if>
+      <if test="aboutType != null">
+        #{aboutType,jdbcType=INTEGER},
+      </if>
+      <if test="aboutContent != null">
+        #{aboutContent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dk.modules.config.po.ConfigAbout">
+    update CONFIG_ABOUT
+    <set>
+      <if test="aboutContent != null">
+        ABOUT_CONTENT = #{aboutContent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ABOUT_ID = #{aboutId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.dk.modules.config.po.ConfigAbout">
+    update CONFIG_ABOUT
+    set ABOUT_CONTENT = #{aboutContent,jdbcType=LONGVARCHAR}
+    where ABOUT_ID = #{aboutId,jdbcType=VARCHAR}
+  </update>
+</mapper>

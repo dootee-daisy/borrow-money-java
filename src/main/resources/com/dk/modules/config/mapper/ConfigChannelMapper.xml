@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dk.modules.config.mapper.ConfigChannelMapper">
+  <resultMap id="BaseResultMap" type="com.dk.modules.config.po.ConfigChannel">
+    <id column="CHANNEL_CODE" jdbcType="VARCHAR" property="channelCode" />
+    <result column="CHANNEL_NAME" jdbcType="VARCHAR" property="channelName" />
+    <result column="UV_COUNT" jdbcType="INTEGER" property="uvCount" />
+    <result column="ORDER_COUNT" jdbcType="INTEGER" property="orderCount" />
+    <result column="MEMBER_COUNT" jdbcType="INTEGER" property="memberCount" />
+    <result column="CHANNEL_PATH" jdbcType="VARCHAR" property="channelPath" />
+    <result column="APP_PATH" jdbcType="VARCHAR" property="appPath" />
+    <result column="DELETED" jdbcType="INTEGER" property="deleted" />
+    <result column="ADD_TIME" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    CHANNEL_CODE, CHANNEL_NAME, UV_COUNT, MEMBER_COUNT,ORDER_COUNT, CHANNEL_PATH, APP_PATH, DELETED,
+    ADD_TIME, UPDATE_TIME
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from CONFIG_CHANNEL
+    where CHANNEL_CODE = #{channelCode,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from CONFIG_CHANNEL
+    where DELETED = 0
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from CONFIG_CHANNEL
+    where CHANNEL_CODE = #{channelCode,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.dk.modules.config.po.ConfigChannel">
+    insert into CONFIG_CHANNEL (CHANNEL_CODE, CHANNEL_NAME, UV_COUNT, ORDER_COUNT,
+      MEMBER_COUNT, CHANNEL_PATH, APP_PATH, 
+      DELETED, ADD_TIME, UPDATE_TIME
+      )
+    values (#{channelCode,jdbcType=VARCHAR}, #{channelName,jdbcType=VARCHAR}, #{uvCount,jdbcType=INTEGER}, #{orderCount,jdbcType=INTEGER},
+      #{memberCount,jdbcType=INTEGER}, #{channelPath,jdbcType=VARCHAR}, #{appPath,jdbcType=VARCHAR}, 
+      #{deleted,jdbcType=INTEGER}, #{addTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.dk.modules.config.po.ConfigChannel">
+    insert into CONFIG_CHANNEL
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="channelCode != null">
+        CHANNEL_CODE,
+      </if>
+      <if test="channelName != null">
+        CHANNEL_NAME,
+      </if>
+      <if test="uvCount != null">
+        UV_COUNT,
+      </if>
+      <if test="memberCount != null">
+        MEMBER_COUNT,
+      </if>
+      <if test="orderCount != null">
+        ORDER_COUNT,
+      </if>
+      <if test="channelPath != null">
+        CHANNEL_PATH,
+      </if>
+      <if test="appPath != null">
+        APP_PATH,
+      </if>
+      <if test="deleted != null">
+        DELETED,
+      </if>
+      <if test="addTime != null">
+        ADD_TIME,
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="channelCode != null">
+        #{channelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="channelName != null">
+        #{channelName,jdbcType=VARCHAR},
+      </if>
+      <if test="uvCount != null">
+        #{uvCount,jdbcType=INTEGER},
+      </if>
+      <if test="memberCount != null">
+        #{memberCount,jdbcType=INTEGER},
+      </if>
+      <if test="orderCount != null">
+        #{orderCount,jdbcType=INTEGER},
+      </if>
+      <if test="channelPath != null">
+        #{channelPath,jdbcType=VARCHAR},
+      </if>
+      <if test="appPath != null">
+        #{appPath,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dk.modules.config.po.ConfigChannel">
+    update CONFIG_CHANNEL
+    <set>
+      <if test="channelName != null">
+        CHANNEL_NAME = #{channelName,jdbcType=VARCHAR},
+      </if>
+      <if test="uvCount != null">
+        UV_COUNT = #{uvCount,jdbcType=INTEGER},
+      </if>
+      <if test="memberCount != null">
+        MEMBER_COUNT = #{memberCount,jdbcType=INTEGER},
+      </if>
+      <if test="orderCount != null">
+        ORDER_COUNT = #{orderCount,jdbcType=INTEGER},
+      </if>
+      <if test="channelPath != null">
+        CHANNEL_PATH = #{channelPath,jdbcType=VARCHAR},
+      </if>
+      <if test="appPath != null">
+        APP_PATH = #{appPath,jdbcType=VARCHAR},
+      </if>
+      <if test="deleted != null">
+        DELETED = #{deleted,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null">
+        ADD_TIME = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where CHANNEL_CODE = #{channelCode,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dk.modules.config.po.ConfigChannel">
+    update CONFIG_CHANNEL
+    set CHANNEL_NAME = #{channelName,jdbcType=VARCHAR},
+      UV_COUNT = #{uvCount,jdbcType=INTEGER},
+      MEMBER_COUNT = #{memberCount,jdbcType=INTEGER},
+      ORDER_COUNT = #{orderCount,jdbcType=INTEGER},
+      CHANNEL_PATH = #{channelPath,jdbcType=VARCHAR},
+      APP_PATH = #{appPath,jdbcType=VARCHAR},
+      DELETED = #{deleted,jdbcType=INTEGER},
+      ADD_TIME = #{addTime,jdbcType=TIMESTAMP},
+      UPDATE_TIME = #{updateTime,jdbcType=TIMESTAMP}
+    where CHANNEL_CODE = #{channelCode,jdbcType=VARCHAR}
+  </update>
+</mapper>
