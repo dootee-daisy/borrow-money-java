@@ -16,25 +16,24 @@ public class ConfigOrderWordsService {
     @Autowired
     private ConfigOrderWordsMapper configOrderWordsMapper;
 
-    //查询贷款订单文字
+    // Query loan order texts
     public List<ConfigOrderWords> findWords(int pageNum, int pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.startPage(pageNum, pageSize);
         return configOrderWordsMapper.selectWords();
     }
 
-    //修改贷款订单文字
+    // Update loan order texts
     public void updateWords(ConfigOrderWords configOrderWord) {
         configOrderWordsMapper.updateByPrimaryKeySelective(configOrderWord);
     }
 
-    //删除贷款订单文字
+    // Delete loan order texts
     public void deleteWords(String id) {
         ConfigOrderWords words = new ConfigOrderWords();
         words.setTipsId(id);
         words.setDeleted(new Integer(1));
         configOrderWordsMapper.updateByPrimaryKeySelective(words);
     }
-
 
     public void addWords(ConfigOrderWords configOrderWord) {
         configOrderWord.setTipsId(IDGenerator.createSysId());

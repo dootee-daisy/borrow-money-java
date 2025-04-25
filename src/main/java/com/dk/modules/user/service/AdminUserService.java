@@ -16,7 +16,7 @@ public class AdminUserService {
     @Autowired
     private AdminUserMapper configAdminMapper;
 
-    //查询网站管理员
+    //Truy vấn quản trị viên trang web
     public List<AdminUser> findAdminAllUser(String phone,int pageNum, int pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         return configAdminMapper.selectConfigAdminAll(phone);
@@ -26,19 +26,19 @@ public class AdminUserService {
         return configAdminMapper.selectByPrimaryKey(id);
     }
 
-    //添加网站管理员
+    //Thêm quản trị viên trang web
     public void addAdminUser(AdminUser adminUser) {
         adminUser.setId(IDGenerator.createUserId());
         configAdminMapper.insertSelective(adminUser);
     }
 
-    //修改网站管理员
+    //Chỉnh sửa quản trị viên trang web
     public void updateAdminUser(AdminUser adminUser) {
         //adminUser.setType(null);
         configAdminMapper.updateByPrimaryKeySelective(adminUser);
     }
 
-    //删除网站管理员
+    //Xóa quản trị viên trang web
     public void deleteConfigAdmin(String id) {
         AdminUser adminUser = new AdminUser();
         adminUser.setId(id);

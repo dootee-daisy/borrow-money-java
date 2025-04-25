@@ -23,7 +23,7 @@ public class GlobalExceptionHandler {
         logger.error("NullPointerException",ex);
         Result result = new Result();
         result.setCode(8000);
-        result.setMsg("系统异常");
+        result.setMsg("Ngoại lệ hệ thống");
         return result;
     }
 

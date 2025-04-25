@@ -28,7 +28,7 @@ public class WebOrderInfoController {
     @Autowired
     private OrderContractMapper contractMapper;
 
-    //提交订单
+    //Gửi đơn đặt hàng
     @PostMapping("/add")
     public DataResult addOrder(HttpServletRequest request, @RequestBody OrderInfo orderInfo) throws Exception {
         String memberId = request.getHeader(Constant.HTTP_HEADER_ID);
@@ -58,7 +58,7 @@ public class WebOrderInfoController {
         return Result.init();
     }
 
-    //合同
+    //hợp đồng
     @PostMapping("/contract/info")
     public DataResult contractInfo(@RequestBody OrderContractWithBLOBs orderContract){
         OrderContractWithBLOBs contract = contractMapper.selectByPrimaryKey(orderContract.getOrderId());

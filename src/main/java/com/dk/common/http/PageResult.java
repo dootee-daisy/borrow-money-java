@@ -8,19 +8,19 @@ import com.github.pagehelper.PageInfo;
 public class PageResult extends DataResult {
 
     /**
-     * 总记录数
+     * Total number of records
      */
     private long allCount;
     /**
-     * 总页数
-      */
+     * Total number of pages
+     */
     private int pageCount;
     /**
-     * 页码
+     * Page number
      */
     private int pageNum;
     /**
-     * 每页条数
+     * Number of items per page
      */
     private int pageSize;
 

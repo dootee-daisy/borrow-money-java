@@ -21,7 +21,7 @@ public class AdminOrderInfoController {
     @Autowired
     private OrderInfoService orderInfoService;
 
-    //查询借款列表
+    //Truy vấn danh sách vay
     @ResponseBody
     @PostMapping("/list")
     public PageResult queryLoanAll(@RequestBody PageRequest pageRequest){

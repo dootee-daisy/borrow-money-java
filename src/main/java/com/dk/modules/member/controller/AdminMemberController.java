@@ -25,7 +25,7 @@ public class AdminMemberController {
     @Autowired
     private MemberInfoDetailService memberInfoDetailService;
 
-    //查询用户列表
+    //Query user list
     @ResponseBody
     @PostMapping("/list")
     public PageResult queryMemberAll(@RequestBody PageRequest pageRequest){
@@ -54,7 +54,7 @@ public class AdminMemberController {
     }
 
 
-    //删除用户
+    //Delete user
     @PostMapping("/delete")
     public Result deleteUserById(@RequestBody JSONObject param){
         String id = param.getString("id");
@@ -62,21 +62,21 @@ public class AdminMemberController {
         return Result.init();
     }
 
-    //修改用户密码
+    //Modify user password
     @PostMapping("/update")
     public Result updateMember(@RequestBody MemberInfo memberInfo){
         memberService.updateMember(memberInfo);
         return Result.init();
     }
 
-    //添加用户
+    //Add user
     @PostMapping("/add")
     public Result insertUser(@RequestBody MemberInfo memberInfo) throws MyServiceException {
         memberService.addMember(memberInfo);
         return Result.init();
     }
 
-    //查看用户资料
+    //View user profile
     @PostMapping("/detail/info")
     public DataResult queryMemberDetail(@RequestBody JSONObject param) {
         String id = param.getString("id");
@@ -84,11 +84,11 @@ public class AdminMemberController {
         return DataResult.init().buildData(memberDetail);
     }
 
-    //修改用户资料
+    //Modify user profile
     @PostMapping("/detail/update")
     public Result updateMemberDetailInfo(@RequestBody MemberInfoDetail memberInfoDetail){
-         memberInfoDetailService.updateMemberDetail(memberInfoDetail);
-         return Result.init();
+        memberInfoDetailService.updateMemberDetail(memberInfoDetail);
+        return Result.init();
     }
 
     @PostMapping("/bank/update")
@@ -101,10 +101,10 @@ public class AdminMemberController {
 
     @PostMapping("/number")
     public DataResult queryRegister(){
-        int registerNumber = memberService.findRegisterByDay();  //今日注册数量
-        int realnameNumber = memberService.findRealnameByDay();  //今日实名数量
-        int applyNumber = memberService.findApplyByDay();        //今日申请数量
-        int withdrawNumber = memberService.findWithdrawByDay();  //今日提现数量
+        int registerNumber = memberService.findRegisterByDay();  //Today's registration count
+        int realnameNumber = memberService.findRealnameByDay();  //Today's real-name verification count
+        int applyNumber = memberService.findApplyByDay();        //Today's application count
+        int withdrawNumber = memberService.findWithdrawByDay();  //Today's withdrawal count
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("registerNumber",registerNumber);
         jsonObject.put("realnameNumber",realnameNumber);

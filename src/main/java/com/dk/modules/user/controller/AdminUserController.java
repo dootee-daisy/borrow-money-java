@@ -32,7 +32,7 @@ public class AdminUserController {
     private AuthorityHelper authorityHelper;
     @Autowired
     private RedisService redisService;
-    //查询网站管理员
+    //Truy vấn quản trị viên trang web
     @ResponseBody
     @PostMapping("/list")
     public PageResult queryAdminAll(@RequestBody PageRequest pageRequest){
@@ -53,21 +53,21 @@ public class AdminUserController {
         return  result;
     }
 
-    //添加网站管理员
+    //Thêm quản trị viên trang web
     @PostMapping("/add")
     public Result addAdmin(@RequestBody AdminUser adminUser){
         adminUserService.addAdminUser(adminUser);
         return Result.init();
     }
 
-    //修改网站管理员
+    //Chỉnh sửa quản trị viên trang web
     @PostMapping("/update")
     public Result updateWebAdmin(@RequestBody AdminUser adminUser){
         adminUserService.updateAdminUser(adminUser);
         return Result.init();
     }
 
-    //删除网站管理员
+    //Xóa quản trị viên trang web
     @PostMapping("/delete")
     public Result deleteWebAdmin(@RequestBody JSONObject param){
         String id = param.getString("id");
@@ -75,7 +75,6 @@ public class AdminUserController {
         return Result.init();
     }
 
-    //删除网站管理员
     @PostMapping("/login")
     public DataResult login(HttpServletResponse response, @RequestBody AdminUser user) throws MyServiceException {
         AdminUser u = adminUserService.login(user);

@@ -9,49 +9,50 @@ import java.util.Random;
 public class IDGenerator {
     private static SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
 
-    private static final String ID_PREFIX_MEMBER= "MD";//会员模块
-    private static final String ID_PREFIX_ORDER = "OD";//订单模块
-    private static final String ID_PREFIX_USER = "UD";//用户模块
-    private static final String ID_PREFIX_SYS = "SD";//系统模块
+    private static final String ID_PREFIX_MEMBER = "MD"; // Member module
+    private static final String ID_PREFIX_ORDER = "OD"; // Order module
+    private static final String ID_PREFIX_USER = "UD"; // User module
+    private static final String ID_PREFIX_SYS = "SD"; // System module
 
-    public static String createMemberId(){
+    public static String createMemberId() {
         return createId(ID_PREFIX_MEMBER);
     }
 
-    public static String createOrderId(){
+    public static String createOrderId() {
         return createId(ID_PREFIX_ORDER);
     }
 
-    public static String createUserId(){
+    public static String createUserId() {
         return createId(ID_PREFIX_USER);
     }
-    public static String createSysId(){
+
+    public static String createSysId() {
         return createId(ID_PREFIX_SYS);
     }
 
-
-    private static synchronized String createId(String prefix){
+    private static synchronized String createId(String prefix) {
         prefix = StringUtils.trimAllWhitespace(prefix);
-        if(StringUtils.isEmpty(prefix) || prefix.length() != 2){
+        if (StringUtils.isEmpty(prefix) || prefix.length() != 2) {
             return null;
         }
-        //加上8位日期,还剩10位
-        prefix = prefix +format.format(new Date());
-        //加上5位时间戳,还剩5位
-        String currentTimeMillis = System.currentTimeMillis()+"";
-        prefix = prefix + currentTimeMillis.substring(currentTimeMillis.length()-5,currentTimeMillis.length());
-        //加上5位随机数
-        prefix = prefix +(int)((Math.random()*9+1)*10000);
-        return prefix.substring(6,prefix.length());
+        // Add 8-digit date, 10 digits remaining
+        prefix = prefix + format.format(new Date());
+        // Add 5-digit timestamp, 5 digits remaining
+        String currentTimeMillis = System.currentTimeMillis() + "";
+        prefix = prefix + currentTimeMillis.substring(currentTimeMillis.length() - 5, currentTimeMillis.length());
+        // Add 5-digit random number
+        prefix = prefix + (int) ((Math.random() * 9 + 1) * 10000);
+        return prefix.substring(6, prefix.length());
     }
-    public static synchronized String createId(){
+
+    public static synchronized String createId() {
         String prefix = "";
-        prefix = prefix +format.format(new Date());
-        //加上5位时间戳,还剩5位
-        String currentTimeMillis = System.currentTimeMillis()+"";
-        prefix = prefix + currentTimeMillis.substring(currentTimeMillis.length()-5,currentTimeMillis.length());
-        //加上5位随机数
-        prefix = prefix +(int)((Math.random()*9+1)*10000);
+        prefix = prefix + format.format(new Date());
+        // Add 5-digit timestamp, 5 digits remaining
+        String currentTimeMillis = System.currentTimeMillis() + "";
+        prefix = prefix + currentTimeMillis.substring(currentTimeMillis.length() - 5, currentTimeMillis.length());
+        // Add 5-digit random number
+        prefix = prefix + (int) ((Math.random() * 9 + 1) * 10000);
         return prefix;
     }
 

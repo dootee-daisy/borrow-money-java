@@ -5,7 +5,7 @@ import com.dk.common.exception.MyServiceException;
 import com.dk.common.http.PageResult;
 import com.dk.common.util.DateUtil;
 import com.dk.common.util.IDGenerator;
-import com.dk.common.util.NumberToCN;
+import com.dk.common.util.NumberToEN;
 import com.dk.common.util.SmsUtil;
 import com.dk.modules.config.po.ConfigAgreement;
 import com.dk.modules.config.po.ConfigChannel;
@@ -56,36 +56,35 @@ public class OrderInfoService {
     @Autowired
     private ConfigChannelService channelService;
 
-
-    public void updateAmount(String orderId, int sumLoanAdd,int sumLoanDel) {
+    public void updateAmount(String orderId, int sumLoanAdd, int sumLoanDel) {
         OrderInfo orderInfo = orderInfoMapper.selectByPrimaryKey(orderId);
         String sumLoan = orderInfo.getSumLoan();
-        if (StringUtils.isEmpty(sumLoan)){
+        if (StringUtils.isEmpty(sumLoan)) {
             sumLoan = "0";
         }
         int intSumLoan = Integer.valueOf(sumLoan);
-        int s = intSumLoan+sumLoanAdd-sumLoanDel;
+        int s = intSumLoan + sumLoanAdd - sumLoanDel;
         orderInfo.setSumLoanUpdate(new Integer(1));
         orderInfo.setSumLoan(String.valueOf(s));
 
         orderInfoMapper.updateByPrimaryKeySelective(orderInfo);
-        //修改账户余额
+        // Update account balance
         String orderStatus = orderInfo.getStatus();
         MemberInfo member = memberService.findById(orderInfo.getPhone());
-        if (null != member){
-            if (orderStatus.equals("1") || orderStatus.equals("2")){
+        if (null != member) {
+            if (orderStatus.equals("1") || orderStatus.equals("2")) {
                 member.setBalance(new BigDecimal(0));
                 member.setWithdrawal(new BigDecimal(0));
-            }else if (orderStatus.equals("3")){
+            } else if (orderStatus.equals("3")) {
                 member.setBalance(new BigDecimal(orderInfo.getSumLoan()));
                 member.setWithdrawal(new BigDecimal(0));
-            }else if (orderStatus.equals("4")){
+            } else if (orderStatus.equals("4")) {
                 member.setBalance(new BigDecimal(0));
                 member.setWithdrawal(new BigDecimal(0));
-            } else if (orderStatus.equals("5")){
+            } else if (orderStatus.equals("5")) {
                 member.setBalance(new BigDecimal(orderInfo.getSumLoan()));
                 member.setWithdrawal(new BigDecimal(0));
-            }else {
+            } else {
                 member.setBalance(new BigDecimal(0));
                 member.setWithdrawal(new BigDecimal(orderInfo.getSumLoan()));
             }
@@ -94,22 +93,22 @@ public class OrderInfoService {
     }
 
     @Transactional
-    public void updateBankCard(String orderId,String bankCard) throws MyServiceException{
+    public void updateBankCard(String orderId, String bankCard) throws MyServiceException {
         OrderInfo order = orderInfoMapper.selectByPrimaryKey(orderId);
-        if (null!=order){
+        if (null != order) {
             String orderBankCard = order.getBankCard();
-            if (bankCard.equals(orderBankCard)){
-                throw new MyServiceException("修改卡号与原卡号相同");
+            if (bankCard.equals(orderBankCard)) {
+                throw new MyServiceException("The updated card number is the same as the original card number");
             }
             ConfigOrderWords words = wordsService.findById("17");
-            if (null != words){
-                if(words.getLoanOrderStatus() ==1 && !StringUtils.isEmpty(words.getLoanOrderContent())){
+            if (null != words) {
+                if (words.getLoanOrderStatus() == 1 && !StringUtils.isEmpty(words.getLoanOrderContent())) {
                     order.setStatus(words.getTipsId());
                     order.setStatusName(words.getTipsName());
                     order.setStatusContent(words.getLoanOrderContent());
                 }
-                if (words.getOrderMessageStatus() == 1 && !StringUtils.isEmpty(words.getOrderMessageContent())){
-                    //发送短信
+                if (words.getOrderMessageStatus() == 1 && !StringUtils.isEmpty(words.getOrderMessageContent())) {
+                    // Send SMS
                 }
             }
             order.setBankCard(bankCard);
@@ -119,19 +118,19 @@ public class OrderInfoService {
             detail.setBankCard(bankCard);
             memberInfoDetailService.updateMemberDetail(detail);
 
-            //改合同卡号
+            // Update the bank card number in the contract
             OrderContractWithBLOBs contract = contractMapper.selectAgreementByPrimaryKey(orderId);
-            if (null != contract && !StringUtils.isEmpty(contract.getAgreement())){
-                contract.setAgreement(contract.getAgreement().replace(orderBankCard,bankCard));
+            if (null != contract && !StringUtils.isEmpty(contract.getAgreement())) {
+                contract.setAgreement(contract.getAgreement().replace(orderBankCard, bankCard));
                 contractMapper.updateByPrimaryKeySelective(contract);
             }
         }
     }
 
-    //查询借款列表
-    public PageResult findLoanAll(String phone,Date startTime,Date endTime,int pageNum,int pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
-        List<OrderInfo> orderInfos = orderInfoMapper.selectLoanAll(phone,startTime,endTime,pageNum,pageSize);
+    // Query loan list
+    public PageResult findLoanAll(String phone, Date startTime, Date endTime, int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<OrderInfo> orderInfos = orderInfoMapper.selectLoanAll(phone, startTime, endTime, pageNum, pageSize);
         PageInfo pageInfo = new PageInfo(orderInfos);
         PageResult result = PageResult.init();
         result.setAllCount(pageInfo.getTotal());
@@ -147,15 +146,15 @@ public class OrderInfoService {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         MemberInfo memberInfo = memberService.findById(orderInfo.getPhone());
         MemberInfoDetail memberDetail = memberInfoDetailService.findMemberDetail(orderInfo.getPhone());
-        if (null == memberInfo || memberInfo.getStatus() != 0 || memberInfo.getDeleted() != 0){
-            throw new MyServiceException("账户异常，请联系客服！");
+        if (null == memberInfo || memberInfo.getStatus() != 0 || memberInfo.getDeleted() != 0) {
+            throw new MyServiceException("Account exception, please contact customer service!");
         }
-        if (memberInfo.getIdInfo() ==0 || memberInfo.getBasicInfo() == 0 || memberInfo.getBankInfo()==0){
-            throw new MyServiceException("请先完善资料！");
+        if (memberInfo.getIdInfo() == 0 || memberInfo.getBasicInfo() == 0 || memberInfo.getBankInfo() == 0) {
+            throw new MyServiceException("Please complete your information first!");
         }
         List<OrderInfo> list = orderInfoMapper.selectByMemberId(orderInfo.getPhone());
-        if (null != list && !list.isEmpty()){
-            throw new MyServiceException("您还有订单未处理完，不能重复申请！");
+        if (null != list && !list.isEmpty()) {
+            throw new MyServiceException("You still have unprocessed orders, cannot apply again!");
         }
         BigDecimal numberOfMoney = new BigDecimal(orderInfo.getSumLoan());
 
@@ -171,83 +170,81 @@ public class OrderInfoService {
         orderInfo.setCreateDate(new Date());
         orderInfo.setWallet(new BigDecimal(0));
         orderInfo.setDrawCode("456789");
-        Date repaymentDate = DateUtil.addMonth(orderInfo.getCreateDate(), Integer.parseInt(orderInfo.getLoanDeadline()));//还款日期
+        Date repaymentDate = DateUtil.addMonth(orderInfo.getCreateDate(), Integer.parseInt(orderInfo.getLoanDeadline())); // Repayment date
         orderInfo.setRepaymentDate(repaymentDate);
         orderInfo.setLoanRate("0.6");
 
         ConfigLoan loan = loanService.findInfo();
-        if (null!=loan && !StringUtils.isEmpty(loan.getRate())){
+        if (null != loan && !StringUtils.isEmpty(loan.getRate())) {
             orderInfo.setLoanRate(loan.getRate());
             orderInfo.setMonthPayDay(loan.getRepaymentDay());
-            //利率
+            // Interest rate
             BigDecimal rate = new BigDecimal(0.06);
             try {
                 rate = new BigDecimal(loan.getRate());
-                rate  = rate.divide(new BigDecimal(100),2,BigDecimal.ROUND_HALF_UP);
-            }catch (Exception e){
-
+                rate = rate.divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+            } catch (Exception e) {
             }
-            //借款
+            // Loan amount
             BigDecimal sumLoan = new BigDecimal(orderInfo.getSumLoan());
-            //月息
-            BigDecimal yuexi = sumLoan.multiply(rate);
-            //总期限
-            BigDecimal zongqixian = new BigDecimal(orderInfo.getLoanDeadline());
-            //总利息
-            BigDecimal zonglixi = yuexi.multiply(zongqixian);
-            //总还款
-            BigDecimal zongHunKuang = sumLoan.add(zonglixi);
-            //每月还款
-            BigDecimal meiyuehuankuan = zongHunKuang.divide(zongqixian,2,BigDecimal.ROUND_HALF_UP);
-            orderInfo.setRepaymentAmount(String.valueOf(zongHunKuang));
-            orderInfo.setMonthlyPayments(String.valueOf(meiyuehuankuan));
+            // Monthly interest
+            BigDecimal monthlyInterest = sumLoan.multiply(rate);
+            // Total term
+            BigDecimal totalTerm = new BigDecimal(orderInfo.getLoanDeadline());
+            // Total interest
+            BigDecimal totalInterest = monthlyInterest.multiply(totalTerm);
+            // Total repayment
+            BigDecimal totalRepayment = sumLoan.add(totalInterest);
+            // Monthly repayment
+            BigDecimal monthlyRepayment = totalRepayment.divide(totalTerm, 2, BigDecimal.ROUND_HALF_UP);
+            orderInfo.setRepaymentAmount(String.valueOf(totalRepayment));
+            orderInfo.setMonthlyPayments(String.valueOf(monthlyRepayment));
         }
 
         orderInfo.setStatus("1");
-        //设置状态
+        // Set status
         ConfigOrderWords words = wordsService.findById(orderInfo.getStatus());
-        if (null != words){
+        if (null != words) {
             orderInfo.setStatusName(words.getTipsName());
             orderInfo.setStatusContent(words.getLoanOrderContent());
-            if (words.getOrderMessageStatus() == 1 && !StringUtils.isEmpty(words.getOrderMessageContent())){
-                //发送消息
-//                SmsUtil.sendSMS(orderInfo.getPhone(),words.getOrderMessageContent());
+            if (words.getOrderMessageStatus() == 1 && !StringUtils.isEmpty(words.getOrderMessageContent())) {
+                // Send message
+                // SmsUtil.sendSMS(orderInfo.getPhone(), words.getOrderMessageContent());
             }
         }
-        //记录渠道订单量
+        // Record channel order count
         String channelCode = memberInfo.getChannelCode();
-        if (!StringUtils.isEmpty(channelCode)){
+        if (!StringUtils.isEmpty(channelCode)) {
             ConfigChannel channel = channelService.findById(channelCode);
-            if (null != channel){
-                channel.setOrderCount(channel.getOrderCount()+1);
+            if (null != channel) {
+                channel.setOrderCount(channel.getOrderCount() + 1);
                 channelService.update(channel);
                 orderInfo.setChannelCode(channelCode);
                 orderInfo.setChannelName(channel.getChannelName());
             }
         }
         orderInfoMapper.insertSelective(orderInfo);
-        //生成合同
+        // Generate contract
         ConfigAgreement agreement = agreementService.findById(Constant.AGREEMENT_JK);
-        if (null != agreement){
-
+        if (null != agreement) {
             String con = agreement.getaContent();
-            String numberOfCN = NumberToCN.number2CNMontrayUnit(numberOfMoney);
+            String numberOfEN = NumberToEN.number2ENMonetaryUnit(numberOfMoney);
             String sDate = format.format(orderInfo.getCreateDate());
             String sfDate = format.format(repaymentDate);
             String key = "【】";
-            con = con.replaceFirst(key, "【"+orderInfo.getName()+"】");//借款人
-            con = con.replaceFirst(key, "【"+orderInfo.getSumLoan()+"】");//借款本金
-            con = con.replaceFirst(key, "【"+numberOfCN+"】");//大写本金
-            con = con.replaceFirst(key, "【"+sDate.substring(0, 4)+"】")
-                    .replaceFirst(key, "【"+sDate.substring(5, 7)+"】")
-                    .replaceFirst(key, "【"+sDate.substring(8, 10)+"】")
-                    .replaceFirst(key, "【"+sfDate.substring(0, 4)+"】")
-                    .replaceFirst(key, "【"+sfDate.substring(5, 7)+"】")
-                    .replaceFirst(key, "【"+sfDate.substring(8, 10)+"】")
-                    .replaceFirst(key, "【"+orderInfo.getLoanDeadline()+"】")
-                    .replaceFirst(key, "【"+memberDetail.getName()+"】")
-                    .replaceFirst(key, "【"+memberDetail.getBankCard()+"】")
-                    .replaceFirst(key, "【"+memberDetail.getBankName()+"】");
+            con = con.replaceFirst(key, "【" + orderInfo.getName() + "】"); // Borrower
+            con = con.replaceFirst(key, "【" + orderInfo.getSumLoan() + "】"); // Loan principal
+            con = con.replaceFirst(key, "【" + numberOfEN + "】"); // Principal in uppercase
+            con = con.replaceFirst(key, "【" + sDate.substring(0, 4) + "】")
+                .replaceFirst(key, "【" + sDate.substring(5, 7) + "】")
+                .replaceFirst(key, "【" + sDate.substring(8, 10) + "】")
+                .replaceFirst(key, "【" + sfDate.substring(0, 4) + "】")
+                .replaceFirst(key, "【" + sfDate.substring(5, 7) + "】")
+                .replaceFirst(key, "【" + sfDate.substring(8, 10) + "】")
+                .replaceFirst(key, "【" + orderInfo.getLoanDeadline() + "】")
+                .replaceFirst(key, "【" + memberDetail.getName() + "】")
+                .replaceFirst(key, "【" + memberDetail.getBankCard() + "】")
+                .replaceFirst(key, "【" + memberDetail.getBankName() + "】");
 
             OrderContractWithBLOBs orderContractWithBLOBs = new OrderContractWithBLOBs();
             orderContractWithBLOBs.setAgreement(con);
@@ -259,8 +256,7 @@ public class OrderInfoService {
         return orderInfo.getOrderId();
     }
 
-
-    public List<OrderInfo> findByMemberId(String memberId){
+    public List<OrderInfo> findByMemberId(String memberId) {
         return orderInfoMapper.selectByMemberId(memberId);
     }
 
@@ -276,30 +272,30 @@ public class OrderInfoService {
         String orderStatus = orderInfo.getStatus();
         OrderInfo order = orderInfoMapper.selectByPrimaryKey(orderInfo.getOrderId());
         ConfigOrderWords words = wordsService.findById(orderInfo.getStatus());
-        if (null != words){
+        if (null != words) {
             order.setStatus(orderStatus);
             order.setStatusName(words.getTipsName());
             order.setStatusContent(words.getLoanOrderContent());
-            if (words.getOrderMessageStatus() == 1 || !StringUtils.isEmpty(words.getOrderMessageContent())){
-                //发送消息
-//                SmsUtil.sendSMS(order.getPhone(),words.getOrderMessageContent());
+            if (words.getOrderMessageStatus() == 1 || !StringUtils.isEmpty(words.getOrderMessageContent())) {
+                // Send message
+                // SmsUtil.sendSMS(order.getPhone(), words.getOrderMessageContent());
             }
         }
         MemberInfo member = memberService.findById(order.getPhone());
-        if (null != member){
-            if (orderStatus.equals("1") || orderStatus.equals("2")){
+        if (null != member) {
+            if (orderStatus.equals("1") || orderStatus.equals("2")) {
                 member.setBalance(new BigDecimal(0));
                 member.setWithdrawal(new BigDecimal(0));
-            }else if (orderStatus.equals("3")){
+            } else if (orderStatus.equals("3")) {
                 member.setBalance(new BigDecimal(order.getSumLoan()));
                 member.setWithdrawal(new BigDecimal(0));
-            }else if (orderStatus.equals("4")){
+            } else if (orderStatus.equals("4")) {
                 member.setBalance(new BigDecimal(0));
                 member.setWithdrawal(new BigDecimal(0));
-            } else if (orderStatus.equals("5")){
+            } else if (orderStatus.equals("5")) {
                 member.setBalance(new BigDecimal(order.getSumLoan()));
                 member.setWithdrawal(new BigDecimal(0));
-            }else {
+            } else {
                 member.setBalance(new BigDecimal(0));
                 member.setWithdrawal(new BigDecimal(order.getSumLoan()));
             }
@@ -309,20 +305,20 @@ public class OrderInfoService {
     }
 
     @Transactional
-    public void withdrawal(String id) throws MyServiceException{
+    public void withdrawal(String id) throws MyServiceException {
         MemberInfo memberInfo = memberService.findById(id);
-        if (null==memberInfo ||memberInfo.getStatus() == 1 || memberInfo.getDeleted() ==1 || memberInfo.getBalance().intValue() == 0){
-            throw new MyServiceException("账户暂时不能提现");
+        if (null == memberInfo || memberInfo.getStatus() == 1 || memberInfo.getDeleted() == 1 || memberInfo.getBalance().intValue() == 0) {
+            throw new MyServiceException("Account cannot withdraw at this time");
         }
         memberInfo.setWithdrawal(memberInfo.getBalance().add(memberInfo.getWithdrawal()));
         memberInfo.setBalance(new BigDecimal(0));
         memberService.updateMember(memberInfo);
 
         List<OrderInfo> list = orderInfoMapper.selectByMemberId(id);
-        if (null != list && !list.isEmpty()){
+        if (null != list && !list.isEmpty()) {
             ConfigOrderWords words = wordsService.findById("6");
-            if (null != words){
-                for (OrderInfo order : list){
+            if (null != words) {
+                for (OrderInfo order : list) {
                     order.setStatus(words.getTipsId());
                     order.setStatusName(words.getTipsName());
                     order.setStatusContent(words.getLoanOrderContent());

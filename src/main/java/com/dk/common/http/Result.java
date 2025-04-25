@@ -4,18 +4,18 @@ import com.alibaba.fastjson.JSON;
 
 /**
  * Created by cjq on 2018/3/31.
- * 服务处理结果父类
+ * Parent class for service processing results
  */
 public class Result {
 
     public static final int OK = 0;
 
     /**
-     * 响应代码
+     * Response code
      */
     private int code = 0;
     /**
-     * 响应消息
+     * Response message
      */
     private String msg = "success";
 

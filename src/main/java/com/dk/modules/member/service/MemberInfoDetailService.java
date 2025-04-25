@@ -17,14 +17,14 @@ public class MemberInfoDetailService {
     private MemberService memberService;
 
 
-    //查看用户详情
+    //View user details
     public MemberInfoDetail findMemberDetail(String id)  {
         return memberInfoDetailMapper.selectByPrimaryKey(id);
     }
 
-    //编辑用户
+    //Edit user
     public void updateMemberDetail(MemberInfoDetail memberInfoDetail) {
-       memberInfoDetailMapper.updateByPrimaryKeySelective(memberInfoDetail);
+        memberInfoDetailMapper.updateByPrimaryKeySelective(memberInfoDetail);
     }
 
     public void addIdInfo(MemberInfoDetail detail){

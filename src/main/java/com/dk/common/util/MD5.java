@@ -17,10 +17,10 @@ public class MD5 {
     private final static Logger logger = LoggerFactory.getLogger(MD5.class);
 
     /**
-     * @param plainText 需要加密的字符串
-     * @return
-     * @Description 字符串加密为MD5
-     * 中文加密一致通用,必须转码处理：
+     * @param plainText The string to be encrypted
+     * @return The MD5 encrypted string
+     * @Description Encrypts a string into MD5.
+     * Ensures consistent encryption for Chinese characters, must handle encoding:
      * plainText.getBytes("UTF-8")
      */
     public static String toMD5(String plainText) {
@@ -28,17 +28,17 @@ public class MD5 {
         try {
             rlt.append(md5String(plainText.getBytes("UTF-8")));
         } catch (UnsupportedEncodingException e) {
-            logger.error(" MD5加密出错:", e.toString());
+            logger.error(" MD5 encryption error:", e.toString());
         }
         return rlt.toString();
     }
 
     /**
-     * MD5 参数签名生成算法
+     * MD5 signature generation algorithm for parameters
      *
-     * @param params 请求参数集，所有参数必须已转换为字符串类型
-     * @param secret 签名密钥
-     * @return 签名
+     * @param params Request parameter set, all parameters must be converted to string type
+     * @param secret Signature secret key
+     * @return The generated signature
      * @throws IOException
      */
     public static String getSignature(HashMap<String, String> params, String secret) throws IOException {
